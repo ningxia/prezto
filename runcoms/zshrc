@@ -2,7 +2,7 @@
 # Executes commands at the start of an interactive session.
 #
 # Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#   Bryan Xia <brianalbertxia@gmail.com>
 #
 
 # Source Prezto.
@@ -11,3 +11,131 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+
+alias cl="clear"
+
+# Directories
+alias dev="cd ~/Development"
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias work="cd ~/Development/workspace"
+alias course="cd ~/Documents/Study/Courses"
+#alias os="cd ~/Documents/Study/Courses/Graduate\ Operating\ Systems"
+#alias algo="cd ~/Documents/Study/Courses/Complexity\ and\ Algorithms"
+alias arc="cd ~/Documents/Study/Courses/Computer\ Architecture"
+
+# Java
+export JAVA_HOME=$(/usr/libexec/java_home -v '1.7.*')
+alias jdk='_(){ export JAVA_HOME=$(/usr/libexec/java_home -v "1.$1.*"); }; _'
+
+# Ruby
+export RBENV_ROOT="${HOME}/.rbenv"
+if [ -d "${RBENV_ROOT}" ]; then
+  export PATH="${RBENV_ROOT}/bin:${PATH}"
+  eval "$(rbenv init -)"
+fi
+
+# Android
+export PATH=/Users/ningxia/Library/Android/sdk/platform-tools:/Users/ningxia/Library/Android/sdk/tools:$PATH
+
+# Octave
+alias octave="nohup /usr/local/Cellar/octave/4.0.0_5/bin/octave > /dev/null 2>&1 &"
+alias oct="/usr/local/Cellar/octave/4.0.0_5/bin/octave-cli"
+
+# Python
+export PATH=/Users/ningxia/.anaconda2/bin:$PATH
+alias ip="ipython"
+alias ipn="jupyter notebook"
+alias ipntnl="ssh -N -f -L 8889:127.0.0.1:8889 bryanxia@mlab"
+alias prettyjson="python -m json.tool"
+
+# Hadoop
+export HADOOP_HOME="/usr/local/Cellar/hadoop/2.6.0"
+alias hstart="$HADOOP_HOME/sbin/start-dfs.sh;$HADOOP_HOME/sbin/start-yarn.sh"
+alias hstop="$HADOOP_HOME/sbin/stop-yarn.sh;$HADOOP_HOME/sbin/stop-dfs.sh"
+alias hfs="hadoop fs"
+alias hjar="hadoop jar"
+alias hstream="hjar $HADOOP_HOME/libexec/share/hadoop/tools/lib/hadoop-streaming-*.jar"
+
+# C
+alias gcc="/usr/local/Cellar/gcc/4.9.2_1/bin/gcc-4.9"
+alias g++="/usr/local/Cellar/gcc/4.9.2_1/bin/g++-4.9"
+alias cpp="/usr/local/Cellar/gcc/4.9.2_1/bin/cpp-4.9"
+alias c++="/usr/local/Cellar/gcc/4.9.2_1/bin/c++-4.9"
+export LD_LIBRARY_PATH=/usr/local/lib
+#export LD_LIBRARY_PATH=/usr/local/Cellar/llvm37/HEAD/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+export DYLD_FALLBACK_LIBRARY_PATH=/Users/ningxia/.anaconda2/lib
+#export CXX="clang++-3.7 -stdlib=libc++"
+#export CXXFLAGS="$CXXFLAGS -nostdinc++ -I/usr/local/opt/llvm37/lib/llvm-3.7/include/c++/v1"
+#export LDFLAGS="$LDFLAGS -L/usr/local/opt/llvm37/lib/llvm-3.7/lib"
+export LDFLAGS="$LDFLAGS -L/usr/local/opt/tcl-tk/lib"
+export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/tcl-tk/include"
+
+# Swift
+# export PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin:"${PATH}"
+
+# CUDA
+export PATH=/Developer/NVIDIA/CUDA-7.5/bin:$PATH
+export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-7.5/lib:$DYLD_LIBRARY_PATH
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64"
+export CUDA_HOME=/usr/local/cuda
+
+#AWS
+alias aws_access="source ~/Development/Dev\ Apps/AWS/startup.access"
+alias aws_access_tt="source ~/Development/Dev\ Apps/AWS/tt.access"
+
+# TextMate
+alias mate="open -a TextMate"
+
+# Eclipse (multiple workspaces)
+alias eclipse="nohup ~/Applications/eclipse/./eclipse >/dev/null 2>&1 &"
+alias scala-ide="open ~/Applications/Scala-SDK/Eclipse.app"
+
+# tmux
+alias tma='tmux attach -d -t'
+alias tmc='clear && tmux clear-history'
+alias tmk='tmux kill-session -t'
+alias tml='tmux list-sessions'
+#alias tmn='tmux new-session -s $(basename $(pwd))'
+alias tmn='tmux new-session -s '
+alias tmr='tmux rename-session -t'
+
+# Python ASE
+export PATH=~/.local/bin:$PATH
+
+# Handy Extract Program
+function extract()
+{
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xvjf $1     ;;
+            *.tar.gz)    tar xvzf $1     ;;
+            *.bz2)       bunzip2 $1      ;;
+            *.rar)       unrar x $1      ;;
+            *.gz)        gunzip $1       ;;
+            *.tar)       tar xvf $1      ;;
+            *.tbz2)      tar xvjf $1     ;;
+            *.tgz)       tar xvzf $1     ;;
+            *.zip)       unzip $1        ;;
+            *.Z)         uncompress $1   ;;
+            *.7z)        7z x $1         ;;
+            *)           echo "'$1' cannot be extracted via >extract<" ;;
+        esac
+    else
+        echo "'$1' is not a valid file!"
+    fi
+}
+
+# Make a directory and cd into it
+function mkcd() { mkdir $1 && cd $1 }
+
+# Creates an archive (*.tar.gz) from given directory.
+function maketar() { tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"; }
+
+# Create a ZIP archive of a file or folder.
+function makezip() { zip -r "${1%%/}.zip" "$1" ; }
+
+# Make your directories and files access rights sane.
+function sanitize() { chmod -R u=rwX,g=rX,o= "$@" ;}
+
